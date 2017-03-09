@@ -1,0 +1,25 @@
+{
+  "name": "websocket-express-example",
+  "version": "1.0.0",
+  "description": "WebSockets & Express example",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrippyHank/websocket-express-example.git"
+  },
+  "author": "Aurélien Perronneau <hello@aurelienperronneau.com> (http://aurelienperronneau.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TrippyHank/websocket-express-example/issues"
+  },
+  "dependencies": {
+    "express": "^4.15.2",
+    "express-hbs": "^1.0.4",
+    "express-ws": "^3.0.0"
+  },
+  "devDependencies": {},
+  "homepage": "https://github.com/TrippyHank/websocket-express-example#readme"
+}
