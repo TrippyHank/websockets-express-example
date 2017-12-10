@@ -69,15 +69,15 @@ ___
 ```
 var express   = require('express'),
     app       = express(),
-    expressWs = require('express-ws')(app),
-    hbs       = require('express-hbs');
+    ws        = require('express-ws')(app),
+    exec      = require('child_process').exec;
 
 // Use `.html` for extensions
 app.use(express.static(__dirname));
 
 // Optional middleware
 app.use(function (req, res, next) {
-  console.log('middleware');
+  console.log('Optional middleware');
   return next();
 });
 
@@ -88,16 +88,16 @@ app.get('/', function(req, res, next){
 
 // WebSocket
 app.ws('/', function(ws, req) {
-
   // Handler
   ws.on('message', function(msg) {
-    console.log(msg);
+    console.log('Received message : ' + msg);
   });
-  console.log('Connection opened !');
+
 });
 
 app.listen(3000, function(){
-  console.log("~ Listening on http://localhost:3000/ ");
+  console.log("Listening on http://localhost:3000 !");
+  exec('open http://localhost:3000/')
 });
 ```
 ___
@@ -107,42 +107,36 @@ ___
 ```
 <html>
   <head>
-    <title>WebSocket Example</title>
+    <title>WebSocket Echo Server</title>
     <script charset="utf-8">
-    var conn;
-
-    var wS = {
-      open: function() {
-        conn = new WebSocket("ws://localhost:3000");
-      },
-      send: function() {
-        conn.send(document.getElementById('message').value);
-      },
-      close: function() {
-        conn.send('Closing connection !')
-        conn.close();
-      }
-    };
+      var conn;
+      var websocket = {
+        open: function() {
+          conn = new WebSocket("ws://localhost:3000");
+        },
+        send: function(msg) {
+          conn.send(msg);
+        },
+        close: function() {
+          conn.close();
+        }
+      };
     </script>
   </head>
   <body>
-
     <div class="controls">
-      <button id="button" onclick="wS.open()">Connect</button>
-      <button id="button" onclick="wS.close()">Disconnect</button>
+      <button id="button" onclick="websocket.open()">Connect</button>
+      <button id="button" onclick="websocket.close()">Disconnect</button>
     </div>
-
     <div class="message">
-      <input id="message" type="text" name="message" value="" placeholder="Type your message" onfocus="this.placeholder=''" onblur="this.placeholder='Type your message'">
-      <button id="button" onclick="wS.send()">Send</button>
+      <input id="message" type="text" name="message" value="" placeholder="Type your msg & hit enter" onkeyup="if(event.keyCode==13){websocket.send(this.value);this.value='';};" onfocus="this.placeholder=''" onblur="this.placeholder='Type your msg & hit enter'">
     </div>
-
   </body>
 </html>
 ```
 ___
 
-Démarrez le processus avec la commande ci-dessous puis ouvrez votre navigateur à l'adresse : http://localhost:3000
+Le processus ouvrira un nouvel onglet dans votre navigateur par défaut à l'adresse : http://localhost:3000
 
 ```
 node index.js
