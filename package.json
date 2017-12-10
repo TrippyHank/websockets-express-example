@@ -16,7 +16,7 @@
     "url": "https://github.com/TrippyHank/websocket-express-example/issues"
   },
   "dependencies": {
-    "express": "^4.15.2",
+    "express": "^4.16.2",
     "express-hbs": "^1.0.4",
     "express-ws": "^3.0.0"
   },
