@@ -33,8 +33,6 @@ Cependant, la désignation de WebSockets comme norme pour la transmission de don
 
 Globalement, les WebSockets sont un outil puissant pour ajouter des fonctionnalités en temps réel à une application Web ou mobile mais ils sont encore naissant alors pas de précipitations.
 
-![WebSockets](http://aurelienperronneau.com/content/images/2017/03/WebSockets2.png)
-
 ## Let's Code ! 🔥
 ___
 
