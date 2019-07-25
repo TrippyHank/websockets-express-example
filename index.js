@@ -1,32 +1,31 @@
-var express   = require('express'),
-    app       = express(),
-    ws        = require('express-ws')(app),
-    exec      = require('child_process').exec;
+const express = require('express'),
+    app = express(),
+    ws = require('express-ws')(app),
+    path = require('path');
 
-// Use `.html` for extensions
-app.use(express.static(__dirname));
+// expose public folder
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Optional middleware
+// optional middleware
 app.use(function (req, res, next) {
-  console.log('Optional middleware');
-  return next();
+  console.log("optional middleware");
+  next();
 });
 
-// Create handler / for GET
+// create handler / for GET
 app.get('/', function(req, res, next){
-  res.render('index')
+  res.render("index")
 });
 
-// WebSocket
+// websocket
 app.ws('/', function(ws, req) {
-  // Handler
+  // https://github.com/websockets/ws/blob/master/doc/ws.md#event-message
   ws.on('message', function(msg) {
-    console.log('Received message : ' + msg);
+    console.log(`Data received: ${msg}`);
   });
-
 });
 
+// listen for incoming connections
 app.listen(3000, function(){
   console.log("Listening on http://localhost:3000 !");
-  exec('open http://localhost:3000/')
 });

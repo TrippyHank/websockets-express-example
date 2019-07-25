@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <title>WebSocket Echo Server</title>
+    <script type="text/javascript">
+      var conn;
+      const websocket = {
+        open: function() {
+          conn = new WebSocket("ws://localhost:3000");
+        },
+        send: function(msg) {
+          conn.send(msg);
+        },
+        close: function() {
+          conn.close();
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th><button type="button" name="open" onclick="websocket.open()">Connect</button></th>
+          <th><button type="button" name="close" onclick="websocket.close()">Disconnect</button></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2"><input type="text" id="message" name="message" value="" placeholder="Type your msg & hit enter" onkeyup="if(event.keyCode==13){ websocket.send(this.value); this.value=''; };" onblur="this.placeholder='Type your msg & hit enter'" style="width: 100%;"></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
