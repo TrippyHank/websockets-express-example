@@ -36,81 +36,54 @@ Globalement, les WebSockets sont un outil puissant pour ajouter des fonctionnali
 ![WebSockets](http://aurelienperronneau.com/content/images/2017/03/WebSockets2.png)
 
 ## Let's Code ! 🔥
-
-___
-
-#### Création du projet
-
-```
-cd ~ && mkdir ws-app
-cd ws-app
-```
-___
-
-#### Dépendances
-
-```
-npm init
-npm i express --save
-npm i express-ws --save
-```
-___
-
-#### Création des fichiers
-
-```
-touch index.js && touch index.html
-atom .
-```
 ___
 
 ##### index.js
 
 ```
-var express   = require('express'),
-    app       = express(),
-    ws        = require('express-ws')(app),
-    exec      = require('child_process').exec;
+const express = require('express'),
+    app = express(),
+    ws = require('express-ws')(app),
+    path = require('path');
 
-// Use `.html` for extensions
-app.use(express.static(__dirname));
+// expose public folder
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Optional middleware
+// optional middleware
 app.use(function (req, res, next) {
-  console.log('Optional middleware');
-  return next();
+  console.log("optional middleware");
+  next();
 });
 
-// Create handler / for GET
+// create handler / for GET
 app.get('/', function(req, res, next){
-  res.render('index')
+  res.render("index")
 });
 
-// WebSocket
+// websocket
 app.ws('/', function(ws, req) {
-  // Handler
+  // https://github.com/websockets/ws/blob/master/doc/ws.md#event-message
   ws.on('message', function(msg) {
-    console.log('Received message : ' + msg);
+    console.log(`Data received: ${msg}`);
   });
-
 });
 
+// listen for incoming connections
 app.listen(3000, function(){
   console.log("Listening on http://localhost:3000 !");
-  exec('open http://localhost:3000/')
 });
 ```
 ___
 
-##### index.html
+##### public/index.html
 
 ```
 <html>
   <head>
     <title>WebSocket Echo Server</title>
-    <script charset="utf-8">
+    <script type="text/javascript">
       var conn;
-      var websocket = {
+      const websocket = {
         open: function() {
           conn = new WebSocket("ws://localhost:3000");
         },
@@ -124,15 +97,22 @@ ___
     </script>
   </head>
   <body>
-    <div class="controls">
-      <button id="button" onclick="websocket.open()">Connect</button>
-      <button id="button" onclick="websocket.close()">Disconnect</button>
-    </div>
-    <div class="message">
-      <input id="message" type="text" name="message" value="" placeholder="Type your msg & hit enter" onkeyup="if(event.keyCode==13){websocket.send(this.value);this.value='';};" onfocus="this.placeholder=''" onblur="this.placeholder='Type your msg & hit enter'">
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th><button type="button" name="open" onclick="websocket.open()">Connect</button></th>
+          <th><button type="button" name="close" onclick="websocket.close()">Disconnect</button></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2"><input type="text" id="message" name="message" value="" placeholder="Type your msg & hit enter" onkeyup="if(event.keyCode==13){ websocket.send(this.value); this.value=''; };" onblur="this.placeholder='Type your msg & hit enter'" style="width: 100%;"></td>
+        </tr>
+      </tbody>
+    </table>
   </body>
 </html>
+
 ```
 ___
 
